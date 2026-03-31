@@ -9,7 +9,7 @@ on:
 jobs:
   run-tests:
     runs-on: ubuntu-latest
-    startegy:
+    strategy:
       matrix:
         browser: [firefox, edge] # Chạy trên cả Chrome và Edge
         fail-fast: false # Không dừng nếu một job fail
