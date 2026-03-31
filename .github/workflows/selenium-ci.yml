@@ -18,10 +18,10 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: maven # Cache để lần sau build nhanh hơn
+          
           
       - name: Chạy Selenium Tests
-        run: mvn clean test -Dbrowser=chrome 
+        run: mvn test -Dbrowser=chrome 
         
       - name: Lưu kết quả test
         if: always() # Chạy dù test pass hay fail
