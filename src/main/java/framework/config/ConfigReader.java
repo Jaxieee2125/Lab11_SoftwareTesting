@@ -1,4 +1,5 @@
 package framework.config;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -8,7 +9,14 @@ public class ConfigReader {
     private static ConfigReader instance;
 
     private ConfigReader() {
-        String env = System.getProperty("env", "dev");
+        // Lấy biến env từ hệ thống
+        String env = System.getProperty("env");
+        
+        // Chống đạn: Nếu Maven truyền biến rỗng hoặc lỗi literal, ép về "dev"
+        if (env == null || env.trim().isEmpty() || env.equals("${env}")) {
+            env = "dev";
+        }
+
         String file = "src/test/resources/config-" + env + ".properties";
         try (FileInputStream fis = new FileInputStream(file)) {
             props.load(fis);
