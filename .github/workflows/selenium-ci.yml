@@ -4,15 +4,19 @@ on:
     branches: [ main, develop ]
   pull_request:
     branches: [ main ]
-  workflow_dispatch: # Cho phép bấm nút chạy thủ công
+  workflow_dispatch:
 
 jobs:
   run-tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        browser: [firefox, edge] # Chạy trên cả Chrome và Edge
-        
+        browser: [chrome, firefox]
+      fail-fast: false
+    # CÚ CHỐT: Đặt biến môi trường ở đây, Maven không thể làm mất được!
+    env:
+      BROWSER: ${{ matrix.browser }} 
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,18 +27,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           
-          
-      - name: Chạy test (${{ matrix.browser }})
-        run: mvn test
-        env:
-          # Đây là CÚ CHỐT: Truyền thẳng biến môi trường cho Java
-          BROWSER: ${{ matrix.browser }}
+      - name: Chạy Selenium Tests
+        run: mvn test 
         
       - name: Lưu kết quả test
-        if: always() # Chạy dù test pass hay fail
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results-${{ matrix.browser }} 
+          name: test-results-${{ matrix.browser }}
           path: |
             target/surefire-reports/
             target/screenshots/

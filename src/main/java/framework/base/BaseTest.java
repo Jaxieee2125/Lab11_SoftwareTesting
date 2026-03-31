@@ -18,17 +18,23 @@ public abstract class BaseTest {
     public void setUp(@Optional("") String xmlBrowser, @Optional("dev") String env) {
         System.setProperty("env", env);
         
-        // CÚ CHỐT: Đọc trực tiếp từ Biến môi trường của GitHub Actions (Không qua Maven)
+        // 1. Lấy từ biến môi trường của GitHub
         String targetBrowser = System.getenv("BROWSER");
         
-        // Nếu chạy ở máy bạn (không có biến BROWSER), thử lấy từ dòng lệnh Maven
+        // 2. Lấy từ lệnh Maven
         if (targetBrowser == null || targetBrowser.isBlank()) {
             targetBrowser = System.getProperty("browser");
         }
         
-        // Nếu vẫn không có, lôi từ file config-dev.properties ra
+        // 3. Lấy từ file config local
         if (targetBrowser == null || targetBrowser.isBlank() || targetBrowser.equals("${browser}")) {
             targetBrowser = ConfigReader.getInstance().getBrowser();
+        }
+
+        // BẢO HIỂM NHÂN THỌ: Cấm chạy Edge offline trên Linux CI
+        if (System.getenv("CI") != null && targetBrowser.toLowerCase().contains("edge")) {
+            System.out.println(">>> CI DETECTED: ÉP CHẠY CHROME BỎ QUA EDGE KHỎI CRASH <<<");
+            targetBrowser = "chrome"; 
         }
 
         System.out.println("=========================================");
