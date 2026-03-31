@@ -1,10 +1,7 @@
 package framework.base;
 
 import framework.config.ConfigReader;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.edge.EdgeDriver;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -18,13 +15,25 @@ public abstract class BaseTest {
 
     @Parameters({"browser", "env"})
     @BeforeMethod(alwaysRun = true)
-    public void setUp(@Optional("chrome") String browser, @Optional("dev") String env) {
+    public void setUp(@Optional("") String xmlBrowser, @Optional("dev") String env) {
         System.setProperty("env", env);
         
-        // Ưu tiên lấy browser từ command line (-Dbrowser=...), nếu không có thì lấy từ file config
-        String sysBrowser = System.getProperty("browser");
-        String targetBrowser = (sysBrowser != null && !sysBrowser.isBlank()) ? sysBrowser : ConfigReader.getInstance().getBrowser();
+        // 1. Ưu tiên 1: Lấy từ lệnh Maven (-Dbrowser=...) mà GitHub Actions truyền vào
+        String targetBrowser = System.getProperty("browser");
         
+        // 2. Ưu tiên 2: Lấy từ TestNG XML (nếu Maven không có)
+        if (targetBrowser == null || targetBrowser.isBlank() || targetBrowser.equals("${browser}")) {
+            targetBrowser = xmlBrowser;
+        }
+        
+        // 3. Ưu tiên 3: Lấy từ file config-dev.properties (chỉ dùng cho Local máy bạn)
+        if (targetBrowser == null || targetBrowser.isBlank()) {
+            targetBrowser = ConfigReader.getInstance().getBrowser();
+        }
+
+        System.out.println(">>> TRÌNH DUYỆT ĐANG CHẠY: " + targetBrowser + " <<<");
+
+        // Khởi tạo trình duyệt qua DriverFactory
         WebDriver driver = DriverFactory.createDriver(targetBrowser);
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
