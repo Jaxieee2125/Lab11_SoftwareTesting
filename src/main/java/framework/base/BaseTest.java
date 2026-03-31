@@ -18,22 +18,24 @@ public abstract class BaseTest {
     public void setUp(@Optional("") String xmlBrowser, @Optional("dev") String env) {
         System.setProperty("env", env);
         
-        // 1. Ưu tiên 1: Lấy từ lệnh Maven (-Dbrowser=...) mà GitHub Actions truyền vào
-        String targetBrowser = System.getProperty("browser");
+        // CÚ CHỐT: Đọc trực tiếp từ Biến môi trường của GitHub Actions (Không qua Maven)
+        String targetBrowser = System.getenv("BROWSER");
         
-        // 2. Ưu tiên 2: Lấy từ TestNG XML (nếu Maven không có)
-        if (targetBrowser == null || targetBrowser.isBlank() || targetBrowser.equals("${browser}")) {
-            targetBrowser = xmlBrowser;
+        // Nếu chạy ở máy bạn (không có biến BROWSER), thử lấy từ dòng lệnh Maven
+        if (targetBrowser == null || targetBrowser.isBlank()) {
+            targetBrowser = System.getProperty("browser");
         }
         
-        // 3. Ưu tiên 3: Lấy từ file config-dev.properties (chỉ dùng cho Local máy bạn)
-        if (targetBrowser == null || targetBrowser.isBlank()) {
+        // Nếu vẫn không có, lôi từ file config-dev.properties ra
+        if (targetBrowser == null || targetBrowser.isBlank() || targetBrowser.equals("${browser}")) {
             targetBrowser = ConfigReader.getInstance().getBrowser();
         }
 
-        System.out.println(">>> TRÌNH DUYỆT ĐANG CHẠY: " + targetBrowser + " <<<");
+        System.out.println("=========================================");
+        System.out.println("CI MODE: " + (System.getenv("CI") != null));
+        System.out.println("TARGET BROWSER: " + targetBrowser);
+        System.out.println("=========================================");
 
-        // Khởi tạo trình duyệt qua DriverFactory
         WebDriver driver = DriverFactory.createDriver(targetBrowser);
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));

@@ -24,8 +24,11 @@ jobs:
           distribution: 'temurin'
           
           
-      - name: Chạy test (${{ matrix.browser }}) 
-        run: mvn test -Dbrowser=${{ matrix.browser }}
+      - name: Chạy test (${{ matrix.browser }})
+        run: mvn test
+        env:
+          # Đây là CÚ CHỐT: Truyền thẳng biến môi trường cho Java
+          BROWSER: ${{ matrix.browser }}
         
       - name: Lưu kết quả test
         if: always() # Chạy dù test pass hay fail
