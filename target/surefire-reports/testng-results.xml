@@ -2,12 +2,12 @@
 <testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2026-03-31T14:42:46 ICT" name="Surefire suite" finished-at="2026-03-31T14:42:50 ICT" duration-ms="3602">
+  <suite started-at="2026-03-31T14:54:20 ICT" name="Surefire suite" finished-at="2026-03-31T14:54:23 ICT" duration-ms="3106">
     <groups>
     </groups>
-    <test started-at="2026-03-31T14:42:46 ICT" name="Surefire test" finished-at="2026-03-31T14:42:50 ICT" duration-ms="3602">
+    <test started-at="2026-03-31T14:54:20 ICT" name="Surefire test" finished-at="2026-03-31T14:54:23 ICT" duration-ms="3106">
       <class name="tests.LoginTest">
-        <test-method is-config="true" signature="setUp(java.lang.String,java.lang.String)[pri:0, instance:tests.LoginTest@3745e5c6]" started-at="2026-03-31T14:42:46 ICT" name="setUp" finished-at="2026-03-31T14:42:49 ICT" duration-ms="2415" status="PASS">
+        <test-method is-config="true" signature="setUp(java.lang.String,java.lang.String)[pri:0, instance:tests.LoginTest@3745e5c6]" started-at="2026-03-31T14:54:20 ICT" name="setUp" finished-at="2026-03-31T14:54:22 ICT" duration-ms="2260" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -23,11 +23,11 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="testLoginSuccess()[pri:0, instance:tests.LoginTest@3745e5c6]" started-at="2026-03-31T14:42:49 ICT" name="testLoginSuccess" finished-at="2026-03-31T14:42:49 ICT" duration-ms="631" status="PASS">
+        <test-method signature="testLoginSuccess()[pri:0, instance:tests.LoginTest@3745e5c6]" started-at="2026-03-31T14:54:22 ICT" name="testLoginSuccess" finished-at="2026-03-31T14:54:23 ICT" duration-ms="584" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- testLoginSuccess -->
-        <test-method is-config="true" signature="tearDown(org.testng.ITestResult)[pri:0, instance:tests.LoginTest@3745e5c6]" started-at="2026-03-31T14:42:49 ICT" name="tearDown" finished-at="2026-03-31T14:42:50 ICT" duration-ms="501" status="PASS">
+        <test-method is-config="true" signature="tearDown(org.testng.ITestResult)[pri:0, instance:tests.LoginTest@3745e5c6]" started-at="2026-03-31T14:54:23 ICT" name="tearDown" finished-at="2026-03-31T14:54:23 ICT" duration-ms="209" status="PASS">
           <params>
             <param index="0">
               <value>

@@ -18,11 +18,13 @@ public abstract class BaseTest {
 
     @Parameters({"browser", "env"})
     @BeforeMethod(alwaysRun = true)
-    public void setUp(@Optional("edge") String browser, @Optional("dev") String env) {
+    public void setUp(@Optional("chrome") String browser, @Optional("dev") String env) {
         System.setProperty("env", env);
         
-        // Gọi DriverFactory để tạo driver (nó sẽ tự biết lúc nào chạy Headless, lúc nào chạy thường)
-        String targetBrowser = ConfigReader.getInstance().getBrowser();
+        // Ưu tiên lấy browser từ command line (-Dbrowser=...), nếu không có thì lấy từ file config
+        String sysBrowser = System.getProperty("browser");
+        String targetBrowser = (sysBrowser != null && !sysBrowser.isBlank()) ? sysBrowser : ConfigReader.getInstance().getBrowser();
+        
         WebDriver driver = DriverFactory.createDriver(targetBrowser);
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
