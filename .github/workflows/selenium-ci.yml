@@ -9,6 +9,10 @@ on:
 jobs:
   run-tests:
     runs-on: ubuntu-latest
+    startegy:
+      matrix:
+        browser: [firefox, edge] # Chạy trên cả Chrome và Edge
+        fail-fast: false # Không dừng nếu một job fail
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -20,15 +24,14 @@ jobs:
           distribution: 'temurin'
           
           
-      - name: Chạy Selenium Tests
-        run: mvn test -Dbrowser=chrome 
+      - name: Chạy test (${{ matrix.browser }}) 
+        run: mvn test -Dbrowser=${{ matrix.browser }}
         
       - name: Lưu kết quả test
         if: always() # Chạy dù test pass hay fail
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
+          name: test-results-${{ matrix.browser }} 
           path: |
             target/surefire-reports/
             target/screenshots/
-          retention-days: 30
