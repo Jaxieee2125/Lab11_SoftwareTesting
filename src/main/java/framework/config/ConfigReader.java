@@ -30,6 +30,26 @@ public class ConfigReader {
         return instance;
     }
 
+    public String getUsername() {
+        // Ưu tiên đọc từ biến môi trường (khi chạy trên CI/CD)
+        String username = System.getenv("APP_USERNAME");
+        if (username == null || username.isBlank()) {
+            // Fallback: đọc từ file config (khi chạy local)
+            username = props.getProperty("app.username", "standard_user"); 
+        }
+        return username;
+    }
+
+    public String getPassword() {
+        // Ưu tiên đọc từ biến môi trường (khi chạy trên CI/CD)
+        String password = System.getenv("APP_PASSWORD");
+        if (password == null || password.isBlank()) {
+            // Fallback: đọc từ file config (khi chạy local)
+            password = props.getProperty("app.password", "secret_sauce");
+        }
+        return password;
+    }
+
     public String getBaseUrl() { return props.getProperty("base.url"); }
     public String getBrowser() { return props.getProperty("browser", "chrome"); }
 }

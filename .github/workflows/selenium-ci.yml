@@ -29,6 +29,9 @@ jobs:
           
       - name: Chạy Selenium Tests
         run: mvn test 
+        env:
+          APP_USERNAME: ${{ secrets.SAUCEDEMO_USERNAME }}
+          APP_PASSWORD: ${{ secrets.SAUCEDEMO_PASSWORD }}
         
       - name: Lưu kết quả test
         if: always()
